@@ -51,8 +51,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
                             </div>
                             {sidebarOpen && (
                                 <div>
-                                    <h1 className="font-bold text-gray-800 dark:text-gray-100">Finanzas</h1>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">Offline</p>
+                                    <h1 className="font-bold text-gray-800 dark:text-gray-100">Finora</h1>
+                                    <p className="text-xs text-gray-500 dark:text-gray-400">Balance</p>
                                 </div>
                             )}
                         </div>
@@ -147,8 +147,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
                                         <Wallet className="w-6 h-6 text-white" />
                                     </div>
                                     <div>
-                                        <h1 className="font-bold text-gray-800 dark:text-gray-100">Finanzas</h1>
-                                        <p className="text-xs text-gray-500 dark:text-gray-400">Offline</p>
+                                        <h1 className="font-bold text-gray-800 dark:text-gray-100">Finora</h1>
+                                        <p className="text-xs text-gray-500 dark:text-gray-400">Balance</p>
                                     </div>
                                 </div>
                             </div>

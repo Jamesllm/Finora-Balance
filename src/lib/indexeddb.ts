@@ -134,7 +134,7 @@ export const deleteDatabaseFromIndexedDB = async (): Promise<void> => {
 /**
  * Exporta la base de datos como archivo descargable
  */
-export const exportDatabase = async (data: Uint8Array, filename: string = 'finanzas-backup.db'): Promise<void> => {
+export const exportDatabase = async (data: Uint8Array, filename: string = 'finora-backup.db'): Promise<void> => {
   try {
     const blob = new Blob([data as any], { type: 'application/x-sqlite3' });
     const url = URL.createObjectURL(blob);

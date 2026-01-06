@@ -106,7 +106,7 @@ export default function InstallPrompt() {
               </div>
               <div className="flex-1">
                 <h3 className="font-bold text-gray-800 mb-2">
-                  Instalar Finanzas Offline
+                  Instalar Finora Balance
                 </h3>
                 <p className="text-sm text-gray-600 mb-3">
                   Instala esta app en tu iPhone:
@@ -154,7 +154,7 @@ export default function InstallPrompt() {
             </div>
             <div className="flex-1">
               <h3 className="font-bold text-gray-800 mb-2">
-                Instalar Finanzas Offline
+                Instalar Finora Balance
               </h3>
               <p className="text-sm text-gray-600 mb-4">
                 Instala la app para acceder más rápido y usarla offline

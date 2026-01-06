@@ -63,12 +63,23 @@ class SQLiteClient {
       if (savedData) {
         console.log('📂 Cargando base de datos existente...');
         this.db = new this.SQL.Database(savedData);
+
+        // Ejecutar migraciones para actualizar schema si es necesario
+        const { runMigrations } = await import('./migrations');
+        runMigrations(this.db);
+
+        // Guardar cambios de migraciones
+        await this.saveDatabase();
       } else {
         console.log('🆕 Creando nueva base de datos...');
         this.db = new this.SQL.Database();
 
         // Ejecutar el schema inicial
         this.db.run(SCHEMA_SQL);
+
+        // Ejecutar migraciones (por si acaso)
+        const { runMigrations } = await import('./migrations');
+        runMigrations(this.db);
 
         // Guardar la nueva DB
         await this.saveDatabase();

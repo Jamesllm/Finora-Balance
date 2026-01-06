@@ -34,7 +34,7 @@ export default function HomePage() {
         <div className="bg-blue-600 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
           <Wallet className="w-10 h-10 text-white" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">Finanzas Offline</h1>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">Finora Balance</h1>
         <p className="text-gray-600 dark:text-gray-400">Cargando...</p>
       </div>
     </div>

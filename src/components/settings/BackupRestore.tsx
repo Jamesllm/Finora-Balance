@@ -84,7 +84,7 @@ export default function BackupRestore() {
     try {
       await importDatabase(file);
       setSuccessMessage('✓ Base de datos importada exitosamente. Recargando...');
-      
+
       // Recargar la página después de importar
       setTimeout(() => {
         window.location.reload();
@@ -105,7 +105,7 @@ export default function BackupRestore() {
       await resetDatabase();
       setShowResetModal(false);
       setSuccessMessage('✓ Base de datos reiniciada. Recargando...');
-      
+
       // Recargar la página después de reiniciar
       setTimeout(() => {
         window.location.href = '/login';
@@ -230,7 +230,7 @@ export default function BackupRestore() {
             <ul className="text-xs text-blue-800 space-y-1">
               <li>• Exporta backups regularmente (semanal o mensualmente)</li>
               <li>• Guarda los backups en un lugar seguro (Google Drive, Dropbox, etc.)</li>
-              <li>• Nombra los backups con la fecha: finanzas-2024-01-15.db</li>
+              <li>• Nombra los backups con la fecha: finora-2024-01-15.db</li>
               <li>• Verifica que puedes importar el backup antes de eliminar datos</li>
             </ul>
           </div>

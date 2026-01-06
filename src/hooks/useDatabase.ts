@@ -35,9 +35,9 @@ export const useDatabase = (): UseDatabaseReturn => {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       await sqliteClient.initialize();
-      
+
       setIsInitialized(true);
       setIsLoading(false);
     } catch (err) {
@@ -75,8 +75,8 @@ export const useDatabase = (): UseDatabaseReturn => {
     try {
       const data = sqliteClient.exportDatabase();
       const timestamp = new Date().toISOString().split('T')[0];
-      const filename = `finanzas-backup-${timestamp}.db`;
-      
+      const filename = `finora-backup-${timestamp}.db`;
+
       await exportDB(data, filename);
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Error al exportar DB');
@@ -91,10 +91,10 @@ export const useDatabase = (): UseDatabaseReturn => {
   const importDatabase = useCallback(async (file: File) => {
     try {
       setIsLoading(true);
-      
+
       const data = await importDB(file);
       await sqliteClient.importDatabase(data);
-      
+
       setIsLoading(false);
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Error al importar DB');
@@ -110,9 +110,9 @@ export const useDatabase = (): UseDatabaseReturn => {
   const resetDatabase = useCallback(async () => {
     try {
       setIsLoading(true);
-      
+
       await sqliteClient.resetDatabase();
-      
+
       setIsLoading(false);
     } catch (err) {
       const error = err instanceof Error ? err : new Error('Error al reiniciar DB');

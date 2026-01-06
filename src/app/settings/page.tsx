@@ -120,11 +120,11 @@ export default function SettingsPage() {
         <Card variant="gradient">
           <CardBody>
             <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
-              Acerca de Finanzas Offline
+              Acerca de Finora Balance
             </h3>
             <div className="space-y-3 text-sm text-gray-700 dark:text-gray-300">
               <p>
-                <strong>Finanzas Offline</strong> es una aplicación de gestión
+                <strong>Finora Balance</strong> es una aplicación de gestión
                 financiera personal que funciona 100% en tu navegador, sin
                 necesidad de conexión a internet ni servidores externos.
               </p>

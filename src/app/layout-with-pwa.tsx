@@ -12,30 +12,30 @@ const inter = Inter({ subsets: ['latin'] });
 
 // Metadatos para SEO y PWA
 export const metadata: Metadata = {
-    title: 'Finanzas Offline - Gestión Financiera Personal',
-    description: 'Aplicación de finanzas personales 100% offline con SQLite en el navegador. Gestiona tus ingresos, gastos y presupuestos sin conexión.',
-    applicationName: 'Finanzas Offline',
-    authors: [{ name: 'Finanzas Offline Team' }],
-    keywords: ['finanzas', 'offline', 'presupuesto', 'gastos', 'ingresos', 'SQLite', 'PWA'],
+    title: 'Finora Balance - Gestión Financiera Inteligente',
+    description: 'Finora Balance: Tu aplicación de finanzas personales 100% offline. Gestiona ingresos, gastos y presupuestos con total privacidad y seguridad.',
+    applicationName: 'Finora Balance',
+    authors: [{ name: 'Finora Balance Team' }],
+    keywords: ['finanzas', 'balance', 'finora', 'offline', 'presupuesto', 'gastos', 'ingresos', 'pwa'],
     manifest: '/manifest.json',
     appleWebApp: {
         capable: true,
         statusBarStyle: 'default',
-        title: 'Finanzas Offline',
+        title: 'Finora Balance',
     },
     formatDetection: {
         telephone: false,
     },
     openGraph: {
         type: 'website',
-        siteName: 'Finanzas Offline',
-        title: 'Finanzas Offline - Gestión Financiera Personal',
-        description: 'Aplicación de finanzas personales 100% offline',
+        siteName: 'Finora Balance',
+        title: 'Finora Balance - Gestión Financiera Inteligente',
+        description: 'Tu control financiero personal, seguro y sin conexión.',
     },
     twitter: {
         card: 'summary',
-        title: 'Finanzas Offline',
-        description: 'Aplicación de finanzas personales 100% offline',
+        title: 'Finora Balance',
+        description: 'Gestión financiera personal inteligente y segura.',
     },
 };
 
@@ -67,7 +67,7 @@ export default function RootLayout({
                 {/* Apple Web App */}
                 <meta name="apple-mobile-web-app-capable" content="yes" />
                 <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-                <meta name="apple-mobile-web-app-title" content="Finanzas Offline" />
+                <meta name="apple-mobile-web-app-title" content="Finora Balance" />
 
                 {/* Microsoft */}
                 <meta name="msapplication-TileColor" content="#3B82F6" />

@@ -1,7 +1,7 @@
 {
-  "name": "Finanzas Offline - Gestión Financiera Personal",
-  "short_name": "Finanzas Offline",
-  "description": "Aplicación de finanzas personales 100% offline con SQLite en el navegador",
+  "name": "Finora Balance - Gestión Financiera Inteligente",
+  "short_name": "Finora Balance",
+  "description": "Tu control financiero personal 100% offline y seguro",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

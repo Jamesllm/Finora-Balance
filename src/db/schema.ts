@@ -1,12 +1,13 @@
 /**
  * Schema SQL como constante TypeScript
  * Exportado para ser usado por el cliente SQLite
+ * Version: 2.0.0 - Schema limpio sin duplicaciones
  */
 
 export const SCHEMA_SQL = `
 -- ============================================
--- SCHEMA: Finanzas Personales Offline
--- Version: 1.0.0
+-- SCHEMA: Finora Balance
+-- Version: 2.0.0
 -- ============================================
 
 -- Tabla de usuarios (autenticación local)
@@ -72,22 +73,93 @@ CREATE TABLE IF NOT EXISTS settings (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Tabla de presupuestos
+-- Tabla de presupuestos (versión actualizada con is_active)
 CREATE TABLE IF NOT EXISTS budgets (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     category_id INTEGER NOT NULL,
     amount REAL NOT NULL CHECK(amount > 0),
-    month INTEGER NOT NULL CHECK(month BETWEEN 1 AND 12),
-    year INTEGER NOT NULL CHECK(year >= 2020),
-    user_id INTEGER NOT NULL,
+    period TEXT NOT NULL CHECK(period IN ('monthly', 'yearly')) DEFAULT 'monthly',
+    start_date TEXT NOT NULL,
+    end_date TEXT,
+    alert_percentage INTEGER DEFAULT 80,
+    is_active BOOLEAN DEFAULT 1,
+    month INTEGER CHECK(month BETWEEN 1 AND 12),
+    year INTEGER CHECK(year >= 2020),
+    user_id INTEGER,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    UNIQUE(category_id, month, year, user_id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS idx_budgets_period ON budgets(year, month);
 CREATE INDEX IF NOT EXISTS idx_budgets_user ON budgets(user_id);
+CREATE INDEX IF NOT EXISTS idx_budgets_category ON budgets(category_id);
+CREATE INDEX IF NOT EXISTS idx_budgets_active ON budgets(is_active);
+
+-- Tablas adicionales
+CREATE TABLE IF NOT EXISTS category_icons (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL UNIQUE,
+  svg_path TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS category_colors (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL UNIQUE,
+  hex TEXT NOT NULL,
+  dark_hex TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS savings_goals (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  description TEXT,
+  target_amount REAL NOT NULL,
+  current_amount REAL DEFAULT 0,
+  target_date TEXT,
+  icon TEXT,
+  color TEXT,
+  is_completed BOOLEAN DEFAULT 0,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  completed_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS goal_contributions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  goal_id INTEGER NOT NULL,
+  transaction_id INTEGER,
+  amount REAL NOT NULL,
+  contribution_date TEXT NOT NULL,
+  note TEXT,
+  FOREIGN KEY (goal_id) REFERENCES savings_goals(id),
+  FOREIGN KEY (transaction_id) REFERENCES transactions(id)
+);
+
+CREATE TABLE IF NOT EXISTS accounts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  type TEXT NOT NULL CHECK(type IN ('cash', 'bank', 'credit_card', 'investment', 'other')),
+  currency TEXT DEFAULT 'USD',
+  initial_balance REAL DEFAULT 0,
+  current_balance REAL DEFAULT 0,
+  icon TEXT,
+  color TEXT,
+  is_active BOOLEAN DEFAULT 1,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS transfers (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  from_account_id INTEGER NOT NULL,
+  to_account_id INTEGER NOT NULL,
+  amount REAL NOT NULL,
+  exchange_rate REAL DEFAULT 1,
+  date TEXT NOT NULL,
+  description TEXT,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (from_account_id) REFERENCES accounts(id),
+  FOREIGN KEY (to_account_id) REFERENCES accounts(id)
+);
 
 -- ============================================
 -- TRIGGERS: Actualizar updated_at
@@ -153,99 +225,4 @@ SELECT
 FROM transactions t
 JOIN categories c ON t.category_id = c.id
 ORDER BY t.date DESC, t.created_at DESC;
-
--- Agregar a db/schema.sql
-CREATE TABLE IF NOT EXISTS category_icons (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL UNIQUE,
-  svg_path TEXT NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS category_colors (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL UNIQUE,
-  hex TEXT NOT NULL,
-  dark_hex TEXT NOT NULL
-);
-
--- Modificar tabla categories
-ALTER TABLE categories ADD COLUMN icon_id INTEGER REFERENCES category_icons(id);
-ALTER TABLE categories ADD COLUMN color_id INTEGER REFERENCES category_colors(id);
-ALTER TABLE categories ADD COLUMN parent_id INTEGER REFERENCES categories(id);
-ALTER TABLE categories ADD COLUMN is_archived BOOLEAN DEFAULT 0;
-ALTER TABLE categories ADD COLUMN sort_order INTEGER DEFAULT 0;
-
--- db/schema.sql
-CREATE TABLE IF NOT EXISTS budgets (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  category_id INTEGER NOT NULL,
-  amount REAL NOT NULL,
-  period TEXT NOT NULL CHECK(period IN ('monthly', 'yearly')),
-  start_date TEXT NOT NULL,
-  end_date TEXT,
-  alert_percentage INTEGER DEFAULT 80,
-  is_active BOOLEAN DEFAULT 1,
-  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (category_id) REFERENCES categories(id)
-);
-
-CREATE INDEX idx_budgets_category ON budgets(category_id);
-CREATE INDEX idx_budgets_active ON budgets(is_active);
-
--- db/schema.sql
-CREATE TABLE IF NOT EXISTS savings_goals (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  description TEXT,
-  target_amount REAL NOT NULL,
-  current_amount REAL DEFAULT 0,
-  target_date TEXT,
-  icon TEXT,
-  color TEXT,
-  is_completed BOOLEAN DEFAULT 0,
-  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-  completed_at TEXT
-);
-
-CREATE TABLE IF NOT EXISTS goal_contributions (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  goal_id INTEGER NOT NULL,
-  transaction_id INTEGER,
-  amount REAL NOT NULL,
-  contribution_date TEXT NOT NULL,
-  note TEXT,
-  FOREIGN KEY (goal_id) REFERENCES savings_goals(id),
-  FOREIGN KEY (transaction_id) REFERENCES transactions(id)
-);
-
--- db/schema.sql
-CREATE TABLE IF NOT EXISTS accounts (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  type TEXT NOT NULL CHECK(type IN ('cash', 'bank', 'credit_card', 'investment', 'other')),
-  currency TEXT DEFAULT 'USD',
-  initial_balance REAL DEFAULT 0,
-  current_balance REAL DEFAULT 0,
-  icon TEXT,
-  color TEXT,
-  is_active BOOLEAN DEFAULT 1,
-  created_at TEXT DEFAULT CURRENT_TIMESTAMP
-);
-
--- Modificar transactions para incluir account
-ALTER TABLE transactions ADD COLUMN account_id INTEGER REFERENCES accounts(id);
-CREATE INDEX idx_transactions_account ON transactions(account_id);
-
-CREATE TABLE IF NOT EXISTS transfers (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  from_account_id INTEGER NOT NULL,
-  to_account_id INTEGER NOT NULL,
-  amount REAL NOT NULL,
-  exchange_rate REAL DEFAULT 1,
-  date TEXT NOT NULL,
-  description TEXT,
-  created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (from_account_id) REFERENCES accounts(id),
-  FOREIGN KEY (to_account_id) REFERENCES accounts(id)
-);
 `;
