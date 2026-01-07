@@ -47,7 +47,7 @@ export default function TransactionsPage() {
           return {
             ...t,
             category_name: category?.name || 'Sin categoría',
-            category_icon: category?.icon || '📦',
+            category_icon: category?.icon || 'Package',
             category_color: category?.color || '#6B7280',
           };
         })

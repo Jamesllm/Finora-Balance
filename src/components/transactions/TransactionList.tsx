@@ -10,6 +10,7 @@ import { Card, CardHeader, CardBody, Badge, Button } from '@/components/ui';
 import { ConfirmModal } from '@/components/ui/Modal';
 import { Transaction } from '@/types/database.types';
 import { useCurrency } from '@/hooks/useCurrency';
+import { CategoryIcon } from '@/components/CategoryIcon';
 
 interface TransactionListProps {
   transactions: Array<Transaction & { category_name: string; category_icon: string; category_color: string }>;
@@ -137,7 +138,7 @@ export default function TransactionList({
                       className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
                       style={{ backgroundColor: transaction.category_color + '20' }}
                     >
-                      <span className="text-2xl">{transaction.category_icon}</span>
+                      <CategoryIcon iconName={transaction.category_icon} color={transaction.category_color} className="w-6 h-6" />
                     </div>
 
                     {/* Información */}

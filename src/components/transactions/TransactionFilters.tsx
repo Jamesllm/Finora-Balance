@@ -41,7 +41,7 @@ export default function TransactionFilters({
     { value: '', label: 'Todas las categorías' },
     ...categories.map(cat => ({
       value: cat.id.toString(),
-      label: `${cat.icon} ${cat.name}`,
+      label: cat.name,
     })),
   ];
 

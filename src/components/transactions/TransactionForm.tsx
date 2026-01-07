@@ -95,9 +95,9 @@ export default function TransactionForm({
     // Evitar múltiples puntos
     const parts = sanitized.split('.');
     const formatted = parts.length > 2 ? parts[0] + '.' + parts.slice(1).join('') : sanitized;
-    
+
     setFormData(prev => ({ ...prev, amount: formatted }));
-    
+
     // Limpiar error si el valor es válido
     if (parseFloat(formatted) > 0) {
       setErrors(prev => ({ ...prev, amount: '' }));
@@ -108,7 +108,7 @@ export default function TransactionForm({
 
   const categoryOptions = currentCategories.map(cat => ({
     value: cat.id.toString(),
-    label: `${cat.icon} ${cat.name}`,
+    label: cat.name,
   }));
 
   return (
@@ -117,9 +117,8 @@ export default function TransactionForm({
         title={transaction ? 'Editar Transacción' : 'Nueva Transacción'}
         subtitle={transaction ? 'Modifica los datos de la transacción' : 'Registra un ingreso o gasto'}
         icon={
-          <div className={`p-2 rounded-lg ${
-            formData.type === 'income' ? 'bg-green-100' : 'bg-red-100'
-          }`}>
+          <div className={`p-2 rounded-lg ${formData.type === 'income' ? 'bg-green-100' : 'bg-red-100'
+            }`}>
             <span className="text-2xl">{formData.type === 'income' ? '📈' : '📉'}</span>
           </div>
         }
@@ -135,11 +134,10 @@ export default function TransactionForm({
               <button
                 type="button"
                 onClick={() => setFormData(prev => ({ ...prev, type: 'income', category_id: '' }))}
-                className={`p-4 rounded-lg border-2 transition-all ${
-                  formData.type === 'income'
-                    ? 'border-green-500 bg-green-50'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
+                className={`p-4 rounded-lg border-2 transition-all ${formData.type === 'income'
+                  ? 'border-green-500 bg-green-50'
+                  : 'border-gray-200 hover:border-gray-300'
+                  }`}
               >
                 <div className="text-3xl mb-2">📈</div>
                 <div className="font-semibold text-gray-800">Ingreso</div>
@@ -149,11 +147,10 @@ export default function TransactionForm({
               <button
                 type="button"
                 onClick={() => setFormData(prev => ({ ...prev, type: 'expense', category_id: '' }))}
-                className={`p-4 rounded-lg border-2 transition-all ${
-                  formData.type === 'expense'
-                    ? 'border-red-500 bg-red-50'
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
+                className={`p-4 rounded-lg border-2 transition-all ${formData.type === 'expense'
+                  ? 'border-red-500 bg-red-50'
+                  : 'border-gray-200 hover:border-gray-300'
+                  }`}
               >
                 <div className="text-3xl mb-2">📉</div>
                 <div className="font-semibold text-gray-800">Gasto</div>
